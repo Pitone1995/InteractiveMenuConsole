@@ -1,10 +1,11 @@
-#ifndef MENU_H
-#define MENU_H
+#ifndef menu_H
+#define menu_H
 
 class Menu {
 
 public:
 	Menu();
+	~Menu();
 
 	void run();
 	void show();

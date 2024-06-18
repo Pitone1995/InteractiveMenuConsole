@@ -1,14 +1,11 @@
 #include "menu.h"
-#include <iostream>
+
+#include "ConsoleUtils.h"
 #include <conio.h>
-#include "windows.h"
 
 #define UP_ARROW 72
 #define DWN_ARROW 80
 #define ENTER 13
-
-#define HIGHLIGHT_TXT 240
-#define DEFAULT_TXT 15
 
 enum {
 
@@ -21,7 +18,16 @@ using namespace std;
 
 Menu::Menu() {
 	
+	Console::ShowConsoleCursor(false);
 	show();
+}
+
+Menu::~Menu() {
+
+	Console::ShowConsoleCursor(true);
+	Console::resetColor();
+	system("cls");
+	system("color");
 }
 
 void Menu::run() {
@@ -55,6 +61,7 @@ void Menu::run() {
 
 		case ENTER:
 			selOption();
+			show();
 			break;
 
 		default:
@@ -65,37 +72,31 @@ void Menu::run() {
 
 void Menu::show() {
 
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hConsole, DEFAULT_TXT);
-
+	Console::resetColor();
 	system("cls");
 
 	switch (selIndex) {
 
 		case 0:
-			SetConsoleTextAttribute(hConsole, HIGHLIGHT_TXT);
+			Console::setColor(HIGHLIGHT_TXT);
 			cout << "New game\n";
-			SetConsoleTextAttribute(hConsole, DEFAULT_TXT);
+			Console::resetColor();
 			cout << "Load game\n";
-			SetConsoleTextAttribute(hConsole, DEFAULT_TXT);
 			cout << "Quit\n";
 			break;
 		
 		case 1:
-			SetConsoleTextAttribute(hConsole, DEFAULT_TXT);
 			cout << "New game" << endl;
-			SetConsoleTextAttribute(hConsole, HIGHLIGHT_TXT);
+			Console::setColor(HIGHLIGHT_TXT);
 			cout << "Load game" << endl;
-			SetConsoleTextAttribute(hConsole, DEFAULT_TXT);
+			Console::resetColor();
 			cout << "Quit" << endl;
 			break;
 
 		case 2:
-			SetConsoleTextAttribute(hConsole, DEFAULT_TXT);
 			cout << "New game" << endl;
-			SetConsoleTextAttribute(hConsole, DEFAULT_TXT);
 			cout << "Load game" << endl;
-			SetConsoleTextAttribute(hConsole, HIGHLIGHT_TXT);
+			Console::setColor(HIGHLIGHT_TXT);
 			cout << "Quit" << endl;
 			break;
 
@@ -109,16 +110,15 @@ void Menu::selOption() {
 	switch (selIndex) {
 
 	case NEW:
-		cout << "Hai selezionato New game" << endl;
+		cout << "New game selected" << endl;
 		break;
 
 	case LOAD:
-		cout << "Hai selezionato Load game" << endl;
+		cout << "Load game selected" << endl;
 		break;
 
 	default: // QUIT
-		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(hConsole, 15);
+		// Console::resetColor();
 		quit = true;
 		break;
 	}
